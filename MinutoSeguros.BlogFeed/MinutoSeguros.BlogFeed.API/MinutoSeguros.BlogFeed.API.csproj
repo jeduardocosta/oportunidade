@@ -102,7 +102,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Properties\PublishProfiles\minutoseguros-eduardocosta %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\minutoseguros-eduardocosta.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
