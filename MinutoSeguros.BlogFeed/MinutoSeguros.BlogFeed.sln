@@ -7,13 +7,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinutoSeguros.BlogFeed.Core
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D54A3EEE-D158-4324-97F9-7F87D2BA3F07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinutoSeguros.BlogFeed.API.Tests", "MinutoSeguros.BlogFeed.API.Tests\MinutoSeguros.BlogFeed.API.Tests.csproj", "{ADCCDA5B-A1A8-43AC-96A8-049769E5C312}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinutoSeguros.BlogFeed.API.Tests", "Tests\MinutoSeguros.BlogFeed.API.Tests\MinutoSeguros.BlogFeed.API.Tests.csproj", "{ADCCDA5B-A1A8-43AC-96A8-049769E5C312}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinutoSeguros.BlogFeed.Core.Tests", "MinutoSeguros.BlogFeed.Core.Tests\MinutoSeguros.BlogFeed.Core.Tests.csproj", "{F3343813-CFDC-4F83-9950-DAF58110EF54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinutoSeguros.BlogFeed.Core.Tests", "Tests\MinutoSeguros.BlogFeed.Core.Tests\MinutoSeguros.BlogFeed.Core.Tests.csproj", "{F3343813-CFDC-4F83-9950-DAF58110EF54}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinutoSeguros.BlogFeed.API", "MinutoSeguros.BlogFeed.API\MinutoSeguros.BlogFeed.API.csproj", "{F3B29E73-F6F7-4583-97C2-40CD5E02C948}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinutoSeguros.BlogFeed.Log", "MinutoSeguros.BlogFeed.Log\MinutoSeguros.BlogFeed.Log.csproj", "{0BED1C4D-978C-4357-88D4-CBED3A7EF0D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinutoSeguros.BlogFeed.API.IntegrationTests", "Tests\MinutoSeguros.BlogFeed.API.IntegrationTests\MinutoSeguros.BlogFeed.API.IntegrationTests.csproj", "{9A9F07B6-3C02-4754-A9DD-799E5E3C44AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{0BED1C4D-978C-4357-88D4-CBED3A7EF0D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BED1C4D-978C-4357-88D4-CBED3A7EF0D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BED1C4D-978C-4357-88D4-CBED3A7EF0D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A9F07B6-3C02-4754-A9DD-799E5E3C44AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A9F07B6-3C02-4754-A9DD-799E5E3C44AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A9F07B6-3C02-4754-A9DD-799E5E3C44AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A9F07B6-3C02-4754-A9DD-799E5E3C44AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,5 +54,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{ADCCDA5B-A1A8-43AC-96A8-049769E5C312} = {D54A3EEE-D158-4324-97F9-7F87D2BA3F07}
 		{F3343813-CFDC-4F83-9950-DAF58110EF54} = {D54A3EEE-D158-4324-97F9-7F87D2BA3F07}
+		{9A9F07B6-3C02-4754-A9DD-799E5E3C44AD} = {D54A3EEE-D158-4324-97F9-7F87D2BA3F07}
 	EndGlobalSection
 EndGlobal

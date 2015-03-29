@@ -3,11 +3,6 @@ using MinutoSeguros.BlogFeed.Core.Helpers;
 using MinutoSeguros.BlogFeed.Core.Parsers;
 using MinutoSeguros.BlogFeed.Core.Readers;
 using MinutoSeguros.BlogFeed.Log.DI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MinutoSeguros.BlogFeed.Core.DI
 {

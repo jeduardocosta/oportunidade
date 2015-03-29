@@ -17,7 +17,7 @@ namespace MinutoSeguros.BlogFeed.Core.Helpers
 
     public class HtmlHelper : IHtmlHelper
     {
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         public HtmlHelper(ILogger logger)
         {

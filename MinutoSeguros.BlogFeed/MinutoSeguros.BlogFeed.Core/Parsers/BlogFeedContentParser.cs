@@ -5,8 +5,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MinutoSeguros.BlogFeed.Core.Parsers
 {
@@ -17,7 +15,7 @@ namespace MinutoSeguros.BlogFeed.Core.Parsers
 
     public class BlogFeedContentParser : IBlogFeedContentParser
     {
-        private IHtmlHelper _htmlHelper;
+        private readonly IHtmlHelper _htmlHelper;
 
         public BlogFeedContentParser(IHtmlHelper htmlHelper)
         {

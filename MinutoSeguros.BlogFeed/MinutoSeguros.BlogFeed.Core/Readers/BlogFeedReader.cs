@@ -7,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace MinutoSeguros.BlogFeed.Core.Readers
@@ -20,9 +18,9 @@ namespace MinutoSeguros.BlogFeed.Core.Readers
 
     public class BlogFeedReader : IBlogFeedReader
     {
-        private IBlogFeedContentParser _blogFeedContentParser;
-        private IUrlHelper _urlHelper;
-        private ILogger _logger;
+        private readonly IBlogFeedContentParser _blogFeedContentParser;
+        private readonly IUrlHelper _urlHelper;
+        private readonly ILogger _logger;
 
         public BlogFeedReader(IBlogFeedContentParser blogFeedContentParser, IUrlHelper urlHelper, ILogger logger)
         {
@@ -37,8 +35,8 @@ namespace MinutoSeguros.BlogFeed.Core.Readers
 
             try
             {
-                var reader = XmlReader.Create(feedUrl);
-                var feed = SyndicationFeed.Load(reader);
+                var reader = GetXmlReader(feedUrl);
+                var feed = GetSyndicationFeedLoad(reader);
                 var blogFeedContent = _blogFeedContentParser.Parse(feed);
                 return blogFeedContent;
             }
@@ -47,6 +45,16 @@ namespace MinutoSeguros.BlogFeed.Core.Readers
                 _logger.Error(string.Format("failed to read blog feed. Entry url: {0}.", feedUrl), exception);
                 throw;
             }
+        }
+
+        protected virtual SyndicationFeed GetSyndicationFeedLoad(XmlReader reader)
+        {
+            return SyndicationFeed.Load(reader);
+        }
+
+        protected virtual XmlReader GetXmlReader(string feedUrl)
+        {
+            return XmlReader.Create(feedUrl);
         }
 
         private void ValidateFeedUrl(string feedUrl)

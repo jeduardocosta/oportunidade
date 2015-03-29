@@ -1,12 +1,7 @@
-﻿using MinutoSeguros.BlogFeed.Core.Helpers;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace MinutoSeguros.BlogFeed.Core.Entities
 {
@@ -36,6 +31,9 @@ namespace MinutoSeguros.BlogFeed.Core.Entities
 
         private void LoadTopWordsAttribute(string source)
         {
+            if (string.IsNullOrWhiteSpace(source))
+                return;
+
             var filteredContent = RemovedUnnecessaryWords(source);
             _topWords = GetTopWords(filteredContent);
         }
