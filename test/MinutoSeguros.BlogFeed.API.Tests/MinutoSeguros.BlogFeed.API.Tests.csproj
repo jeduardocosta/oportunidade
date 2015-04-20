@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F3343813-CFDC-4F83-9950-DAF58110EF54}</ProjectGuid>
+    <ProjectGuid>{ADCCDA5B-A1A8-43AC-96A8-049769E5C312}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MinutoSeguros.BlogFeed.Core.Tests</RootNamespace>
-    <AssemblyName>MinutoSeguros.BlogFeed.Core.Tests</AssemblyName>
+    <RootNamespace>MinutoSeguros.BlogFeed.API.Tests</RootNamespace>
+    <AssemblyName>MinutoSeguros.BlogFeed.API.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -16,6 +16,8 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,8 +40,24 @@
     <Reference Include="Moq">
       <HintPath>..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -54,27 +72,32 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Entities\BlogFeedContentTest.cs" />
-    <Compile Include="Exceptions\CustomErrorExceptionTest.cs" />
-    <Compile Include="Exceptions\InternalServerErrorExceptionTest.cs" />
-    <Compile Include="Helpers\HtmlHelperTest.cs" />
-    <Compile Include="Helpers\UrlHelperTest.cs" />
-    <Compile Include="Parsers\BlogFeedContentParserTest.cs" />
+    <Compile Include="Controllers\PostsControllerTest.cs" />
+    <Compile Include="Controllers\TopWordsControllerTest.cs" />
+    <Compile Include="DI\DIContainerTest.cs" />
+    <Compile Include="Extensions\EnumerableExtensionTest.cs" />
+    <Compile Include="Models\TopWordsResponseTest.cs" />
+    <Compile Include="Models\TopWordTest.cs" />
+    <Compile Include="Models\MetadataTest.cs" />
+    <Compile Include="Models\PostResponseTest.cs" />
+    <Compile Include="Models\PostTest.cs" />
+    <Compile Include="Models\RequestParametersTest.cs" />
+    <Compile Include="Parsers\RequestParametersParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Readers\BlogFeedReaderTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MinutoSeguros.BlogFeed.Core\MinutoSeguros.BlogFeed.Core.csproj">
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MinutoSeguros.BlogFeed.API\MinutoSeguros.BlogFeed.API.csproj">
+      <Project>{f3b29e73-f6f7-4583-97c2-40cd5e02c948}</Project>
+      <Name>MinutoSeguros.BlogFeed.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\MinutoSeguros.BlogFeed.Core\MinutoSeguros.BlogFeed.Core.csproj">
       <Project>{1ac51c34-80c1-49e6-886e-3274dec5d17d}</Project>
       <Name>MinutoSeguros.BlogFeed.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\MinutoSeguros.BlogFeed.Log\MinutoSeguros.BlogFeed.Log.csproj">
-      <Project>{0bed1c4d-978c-4357-88d4-cbed3a7ef0d2}</Project>
-      <Name>MinutoSeguros.BlogFeed.Log</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
@@ -96,6 +119,13 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
