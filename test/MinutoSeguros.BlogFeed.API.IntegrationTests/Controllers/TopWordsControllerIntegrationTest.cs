@@ -62,7 +62,7 @@ namespace MinutoSeguros.BlogFeed.API.IntegrationTests.Controllers
 
             var topWordsResponseResult = obtained as OkNegotiatedContentResult<TopWordsResponse>;
 
-            Assert.AreEqual(_limit, topWordsResponseResult.Content.Metadata.Limit);
+            Assert.AreEqual(_offset, topWordsResponseResult.Content.Metadata.Offset);
         }
     }
 }
