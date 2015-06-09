@@ -1,6 +1,8 @@
 Oportunidade de trabalho na Minuto Seguros
 ===========================================
 
+[![Build status](https://ci.appveyor.com/api/projects/status/s6a7i0bleokseoyx?svg=true)](https://ci.appveyor.com/project/jeduardocosta/oportunidade)
+
 Venha trabalhar na área de tecnologia da Minuto Corretora de Seguros.
 Na Minuto Seguros, os erros não são passíveis de punição e sim de estudo para aprendizado. Utilizamos métodos ágeis para criação de software e nosso clima é de extrema colaboração. 
 
