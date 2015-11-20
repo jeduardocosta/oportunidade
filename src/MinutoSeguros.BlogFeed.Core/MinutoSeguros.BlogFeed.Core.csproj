@@ -57,10 +57,14 @@
     <Compile Include="Exceptions\CustomErrorException.cs" />
     <Compile Include="Exceptions\InternalServerErrorException.cs" />
     <Compile Include="Helpers\HtmlHelper.cs" />
+    <Compile Include="Helpers\IHtmlHelper.cs" />
+    <Compile Include="Helpers\IUrlHelper.cs" />
     <Compile Include="Helpers\UrlHelper.cs" />
     <Compile Include="Parsers\BlogFeedContentParser.cs" />
+    <Compile Include="Parsers\IBlogFeedContentParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Readers\BlogFeedReader.cs" />
+    <Compile Include="Readers\IBlogFeedReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MinutoSeguros.BlogFeed.Log\MinutoSeguros.BlogFeed.Log.csproj">

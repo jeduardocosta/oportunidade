@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
 using Autofac.Integration.WebApi;
 using System.Reflection;
 
@@ -12,8 +13,10 @@ namespace MinutoSeguros.BlogFeed.API.DI
         {
             get
             {
-                if (_container == null) 
+                if (_container == null)
+                { 
                     Setup();
+                }
 
                 return _container;
             }
@@ -22,6 +25,11 @@ namespace MinutoSeguros.BlogFeed.API.DI
         public static T Resolve<T>()
         {
             return Container.Resolve<T>();
+        }
+
+        public static object Resolve(Type type)
+        {
+            return Container.Resolve(type);
         }
 
         private static void Setup()

@@ -109,6 +109,10 @@
       <Project>{1ac51c34-80c1-49e6-886e-3274dec5d17d}</Project>
       <Name>MinutoSeguros.BlogFeed.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\MinutoSeguros.BlogFeed.Log\MinutoSeguros.BlogFeed.Log.csproj">
+      <Project>{0bed1c4d-978c-4357-88d4-cbed3a7ef0d2}</Project>
+      <Name>MinutoSeguros.BlogFeed.Log</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
+using MinutoSeguros.BlogFeed.Core.Exceptions;
 using NUnit.Framework;
 using MinutoSeguros.BlogFeed.Core.Helpers;
 using MinutoSeguros.BlogFeed.Log;
@@ -17,7 +19,6 @@ namespace MinutoSeguros.BlogFeed.Core.Tests.Helpers
         public void SetUp()
         {
             _mockLogger = new Mock<ILogger>();
-
             _htmlHelper = new HtmlHelper(_mockLogger.Object);
         }
 
@@ -43,6 +44,21 @@ namespace MinutoSeguros.BlogFeed.Core.Tests.Helpers
                 .RemoveTags(htmlContent)
                 .Should()
                 .Be(expected);
+        }
+
+        [Test]
+        public void Should_ThrowCustomErrorException_WhenEntryInvalidHtmlContent()
+        {
+            const string invalidHtmlContent = null;
+
+            Action action = () => _htmlHelper.RemoveTags(invalidHtmlContent);
+
+            action
+                .ShouldThrow<CustomErrorException>()
+                .Which
+                .Message
+                .Should()
+                .Be("failed to remove tags from html content.");
         }
     }
 }

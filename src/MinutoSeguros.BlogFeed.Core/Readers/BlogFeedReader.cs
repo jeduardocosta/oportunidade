@@ -5,17 +5,11 @@ using MinutoSeguros.BlogFeed.Core.Parsers;
 using MinutoSeguros.BlogFeed.Log;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
 
 namespace MinutoSeguros.BlogFeed.Core.Readers
 {
-    public interface IBlogFeedReader
-    {
-        IEnumerable<BlogFeedContent> Read(string feedUrl);
-    }
-
     public class BlogFeedReader : IBlogFeedReader
     {
         private readonly IBlogFeedContentParser _blogFeedContentParser;

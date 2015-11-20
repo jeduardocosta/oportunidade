@@ -6,11 +6,6 @@ using System.ServiceModel.Syndication;
 
 namespace MinutoSeguros.BlogFeed.Core.Parsers
 {
-    public interface IBlogFeedContentParser
-    {
-        IEnumerable<BlogFeedContent> Parse(SyndicationFeed feedContent);
-    }
-
     public class BlogFeedContentParser : IBlogFeedContentParser
     {
         private readonly IHtmlHelper _htmlHelper;
