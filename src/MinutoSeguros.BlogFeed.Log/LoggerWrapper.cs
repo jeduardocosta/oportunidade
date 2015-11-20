@@ -6,9 +6,7 @@ namespace MinutoSeguros.BlogFeed.Log
 {
     public class LoggerWrapper : ILogger
     {
-        private static Logger _logger;
-        
-        private static Logger Logger => _logger ?? LogManager.GetCurrentClassLogger();
+        private static Logger Logger => LogManager.GetCurrentClassLogger();
 
         private readonly NLog.ILogger _nlogLogger;
 
