@@ -1,56 +1,57 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using MinutoSeguros.BlogFeed.Core.Entities;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
 
 namespace MinutoSeguros.BlogFeed.Core.Tests.Entities
 {
-    [TestClass]
+    [TestFixture]
     public class BlogFeedContentTest
     {
-        [TestMethod]
+        [Test]
         public void Should_CreateBloogFeedContentObject_AndCheckTitleParameter()
         {
             const string title = "sample title";
 
             var obtained = new BlogFeedContent(title, It.IsAny<DateTime>(), It.IsAny<IEnumerable<string>>(), It.IsAny<string>());
 
-            Assert.AreEqual(title, obtained.Title);
+            obtained.Title.Should().Be(title);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_CreateBloogFeedContentObject_AndCheckPublishDateParameter()
         {
             var publishDate = DateTime.Now;
 
             var obtained = new BlogFeedContent(It.IsAny<string>(), publishDate, It.IsAny<IEnumerable<string>>(), It.IsAny<string>());
 
-            Assert.AreEqual(publishDate, obtained.PublishDate);
+            obtained.PublishDate.Should().Be(publishDate);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_CreateBloogFeedContentObject_AndCheckCategoriesParameter()
         {
             var categories = new[] { "category 1", "category 2" };
 
             var obtained = new BlogFeedContent(It.IsAny<string>(), It.IsAny<DateTime>(), categories, It.IsAny<string>());
 
-            Assert.IsTrue(categories.SequenceEqual(obtained.Categories));
+            obtained.Categories.ShouldAllBeEquivalentTo(categories);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_CreateBloogFeedContentObject_AndCheckContentParameter()
         {
             const string content = "sample content";
 
             var obtained = new BlogFeedContent(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<IEnumerable<string>>(), content);
 
-            Assert.AreEqual(content, obtained.FullContent);
+            obtained.FullContent.Should().Be(content);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_GetTopWordsValue_WhenCreatingBloogFeedContentObject()
         {
             const string content = "sample html content";
@@ -64,10 +65,10 @@ namespace MinutoSeguros.BlogFeed.Core.Tests.Entities
                 {"content", 1}
             };
 
-            Assert.IsTrue(expectedTopWords.SequenceEqual(obtained.TopWords));
+            obtained.TopWords.ShouldAllBeEquivalentTo(expectedTopWords);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_GetTopWordsValue_AndRemoveArticles_WhenCreatingBloogFeedContentObject()
         {
             const string htmlContentWithArticles = "o sample uma um os as sample";
@@ -76,10 +77,10 @@ namespace MinutoSeguros.BlogFeed.Core.Tests.Entities
 
             var expectedTopWords = new Dictionary<string, int> { {"sample", 2} };
 
-            Assert.IsTrue(expectedTopWords.SequenceEqual(obtained.TopWords));
+            obtained.TopWords.ShouldAllBeEquivalentTo(expectedTopWords);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_GetTopWordsValue_AndRemovePrepositions_WhenCreatingBloogFeedContentObject()
         {
             const string htmlContentWithPrepositions = "desde para test por malgrado exceto após sample sample entre em sem sob trás sample";
@@ -88,10 +89,10 @@ namespace MinutoSeguros.BlogFeed.Core.Tests.Entities
 
             var expectedTopWords = new Dictionary<string, int> { { "sample", 3 }, { "test", 1 } };
 
-            Assert.IsTrue(expectedTopWords.SequenceEqual(obtained.TopWords));
+            obtained.TopWords.ShouldAllBeEquivalentTo(expectedTopWords);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_GetTopWordsValue_FromTextRange_WhenCreatingBloogFeedContentObject()
         {
             const int length = 1000;
@@ -103,7 +104,7 @@ namespace MinutoSeguros.BlogFeed.Core.Tests.Entities
 
             var expectedTopWords = new Dictionary<string, int> { { "sampleword", length } };
 
-            Assert.IsTrue(expectedTopWords.SequenceEqual(obtained.TopWords));
+            obtained.TopWords.ShouldAllBeEquivalentTo(expectedTopWords);
         }
     }
 }

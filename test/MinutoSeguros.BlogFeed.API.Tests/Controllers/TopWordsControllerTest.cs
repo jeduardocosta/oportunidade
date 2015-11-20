@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using MinutoSeguros.BlogFeed.API.Controllers;
 using MinutoSeguros.BlogFeed.API.Models;
 using MinutoSeguros.BlogFeed.API.Parsers;
@@ -8,15 +8,13 @@ using MinutoSeguros.BlogFeed.Core.Readers;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http.Results;
+using FluentAssertions;
 
 namespace MinutoSeguros.BlogFeed.API.Tests.Controllers
 {
-    [TestClass]
+    [TestFixture]
     public class TopWordsControllerTest
     {
         private TopWordsController _controller;
@@ -28,8 +26,8 @@ namespace MinutoSeguros.BlogFeed.API.Tests.Controllers
         private const string Offset = "0";
         private const string TopWords = "10";
 
-        [TestInitialize]
-        public void Init()
+        [SetUp]
+        public void SetUp()
         {
             _mockRequestParametersParser = new Mock<IRequestParametersParser>();
             _mockBlogFeedReader = new Mock<IBlogFeedReader>();
@@ -46,18 +44,28 @@ namespace MinutoSeguros.BlogFeed.API.Tests.Controllers
             _controller.Request = new HttpRequestMessage();
         }
 
-        [TestMethod]
-        public void Should_GetTopWordsContent_InTopWordsController()
+        [Test]
+        public void Should_ReturnOkNegotiatedContentResult_InTopWordsController()
         {
-            var obtained = _controller.Get();
-
-            Assert.IsInstanceOfType(obtained, typeof(OkNegotiatedContentResult<TopWordsResponse>));
+            _controller
+                .Get()
+                .Should()
+                .BeOfType<OkNegotiatedContentResult<TopWordsResponse>>();
 
             _mockRequestParametersParser.Verify(it => it.Parse(It.IsAny<HttpRequestMessage>()), Times.Once);
             _mockBlogFeedReader.Verify(it => it.Read(It.IsAny<string>()), Times.Once);
         }
 
-        [TestMethod]
+        [Test]
+        public void Should_CallDependencies_InTopWordsController()
+        {
+            _controller.Get();
+
+            _mockRequestParametersParser.Verify(it => it.Parse(It.IsAny<HttpRequestMessage>()), Times.Once);
+            _mockBlogFeedReader.Verify(it => it.Read(It.IsAny<string>()), Times.Once);
+        }
+
+        [Test]
         public void Should_ReturnInternalServerError_WhenCustomErrorExceptionIsThrow_InTopWordsController()
         {
             const string errorMessage = "sample error message";
@@ -66,21 +74,23 @@ namespace MinutoSeguros.BlogFeed.API.Tests.Controllers
                 .Setup(it => it.Parse(It.IsAny<HttpRequestMessage>()))
                 .Throws(new CustomErrorException(errorMessage));
 
-            var obtained = _controller.Get();
-
-            Assert.IsInstanceOfType(obtained, typeof(ExceptionResult));
+            _controller
+                .Get()
+                .Should()
+                .BeOfType<ExceptionResult>();
         }
 
-        [TestMethod]
+        [Test]
         public void Should_ReturnInternalServerError_WhenExceptionIsThrow_InTopWordsController()
         {
             _mockRequestParametersParser
                 .Setup(it => it.Parse(It.IsAny<HttpRequestMessage>()))
                 .Throws(new Exception());
 
-            var obtained = _controller.Get();
-
-            Assert.IsInstanceOfType(obtained, typeof(ExceptionResult));
+            _controller
+                .Get()
+                .Should()
+                .BeOfType<ExceptionResult>();
         }
     }
 }

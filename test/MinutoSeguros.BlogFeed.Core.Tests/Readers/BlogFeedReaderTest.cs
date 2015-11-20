@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using MinutoSeguros.BlogFeed.Core.Readers;
 using Moq;
 using MinutoSeguros.BlogFeed.Core.Parsers;
@@ -8,11 +8,12 @@ using MinutoSeguros.BlogFeed.Core.Exceptions;
 using System.ServiceModel.Syndication;
 using MinutoSeguros.BlogFeed.Core.Entities;
 using System.Collections.Generic;
+using FluentAssertions;
 using MinutoSeguros.BlogFeed.Log;
 
 namespace MinutoSeguros.BlogFeed.Core.Tests.Readers
 {
-    [TestClass]
+    [TestFixture]
     public class BlogFeedReaderTest
     {
         private Mock<IBlogFeedContentParser> _mockBlogFeedContentParser;
@@ -24,8 +25,8 @@ namespace MinutoSeguros.BlogFeed.Core.Tests.Readers
         const string InvalidFeedUrl = "domain.com/blog/feed";
         const string ValidFeedUrl = "http://www.minutoseguros.com.br/blog/feed/";
 
-        [TestInitialize]
-        public void Init()
+        [SetUp]
+        public void SetUp()
         {
             _mockBlogFeedContentParser = new Mock<IBlogFeedContentParser>();
             _mockUrlHelper = new Mock<IUrlHelper>();
@@ -33,7 +34,7 @@ namespace MinutoSeguros.BlogFeed.Core.Tests.Readers
 
             _mockBlogFeedContentParser
                 .Setup(it => it.Parse(It.IsAny<SyndicationFeed>()))
-                .Returns(GivenAnSetOfBlogFeedContent());
+                .Returns(GivenSetOfBlogFeedContent());
             
             _mockUrlHelper
                 .Setup(it => it.IsValidAbsoluteUrl(InvalidFeedUrl))
@@ -46,27 +47,36 @@ namespace MinutoSeguros.BlogFeed.Core.Tests.Readers
             _blogFeedReader = new BlogFeedReader(_mockBlogFeedContentParser.Object, _mockUrlHelper.Object, _mockLogger.Object);
         }
 
-        [TestMethod]
+        [Test]
+        public void Should_ReturnValidSetOfBlogFeedContent_UsingBlogFeedReader()
+        {
+            _blogFeedReader
+                .Read(ValidFeedUrl)
+                .Should()
+                .NotBeNull();
+        }
+
+        [Test]
         public void Should_ReadBlogFeedContent_UsingBlogFeedReader()
         {
-            var obtained = _blogFeedReader.Read(ValidFeedUrl);
+            _blogFeedReader.Read(ValidFeedUrl);
 
             _mockUrlHelper.Verify(it => it.IsValidAbsoluteUrl(ValidFeedUrl), Times.Once);
             _mockUrlHelper.Verify(it => it.IsValidAbsoluteUrl(InvalidFeedUrl), Times.Never);
-
             _mockBlogFeedContentParser.Verify(it => it.Parse(It.IsAny<SyndicationFeed>()), Times.Once);
 
-            Assert.IsNotNull(obtained);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(CustomErrorException), AllowDerivedTypes = false)]
+        [Test]
         public void Should_ThrowException_WhenReadFeedUrl_WithInvalidEntryUrl()
         {
-            var obtained = _blogFeedReader.Read(InvalidFeedUrl);
+            Action action = () => _blogFeedReader.Read(InvalidFeedUrl);
+
+            action
+                .ShouldThrow<CustomErrorException>();
         }
 
-        private IEnumerable<BlogFeedContent> GivenAnSetOfBlogFeedContent()
+        private IEnumerable<BlogFeedContent> GivenSetOfBlogFeedContent()
         {
             return new List<BlogFeedContent>
             {

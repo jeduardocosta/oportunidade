@@ -2,67 +2,72 @@
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http.Results;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
 using MinutoSeguros.BlogFeed.API.Controllers;
 using MinutoSeguros.BlogFeed.API.DI;
 using MinutoSeguros.BlogFeed.API.Models;
+using NUnit.Framework;
 
 namespace MinutoSeguros.BlogFeed.API.IntegrationTests.Controllers
 {
-    [TestClass]
+    [TestFixture]
     public class TopWordsControllerIntegrationTest
     {
         private TopWordsController _controller;
 
         private const string FeedUrl = "http://www.minutoseguros.com.br/blog/feed/";
 
-        private int _limit;
-        private int _offset;
-
-        [TestInitialize]
-        public void Init()
+        [SetUp]
+        public void SetUp()
         {
-            _limit = 4;
-            _offset = 6;
-
             _controller = DIContainer.Resolve<TopWordsController>();
             _controller.Request = new HttpRequestMessage();
         }
 
-        [TestMethod]
+        [Test]
         public void Should_GetData_FromTopWordsController()
         {
-            _controller.Request.RequestUri = new Uri(string.Format("http://localhost.com/topWords?feedurl={0}", FeedUrl));
+            _controller.Request.RequestUri = new Uri($"http://localhost.com/topWords?feedurl={FeedUrl}");
 
             var obtained = _controller.Get();
 
-            var topWordsResponseResult = obtained as OkNegotiatedContentResult<TopWordsResponse>;
-
-            Assert.IsTrue(topWordsResponseResult.Content.TopWords.Any());
+            (obtained as OkNegotiatedContentResult<TopWordsResponse>)
+                .Content
+                .TopWords
+                .Any()
+                .Should()
+                .BeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void Should_GetMetadataLimitValue_FromTopWordsController()
         {
-            _controller.Request.RequestUri = new Uri(string.Format("http://localhost.com/topWords?feedurl={0}&limit={1}&offset={2}", FeedUrl, _limit, _offset));
+            _controller.Request.RequestUri = new Uri($"http://localhost.com/topWords?feedurl={FeedUrl}&limit={4}&offset={2}");
 
             var obtained = _controller.Get();
 
-            var topWordsResponseResult = obtained as OkNegotiatedContentResult<TopWordsResponse>;
-
-            Assert.AreEqual(_limit, topWordsResponseResult.Content.Metadata.Limit);
+            (obtained as OkNegotiatedContentResult<TopWordsResponse>)
+                .Content
+                .Metadata
+                .Limit
+                .Should()
+                .Be(4);
+        
         }
 
-        [TestMethod]
+        [Test]
         public void Should_GetMetadataOffsetValue_FromTopWordsController()
         {
-            _controller.Request.RequestUri = new Uri(string.Format("http://localhost.com/topWords?feedurl={0}&limit={1}&offset={2}", FeedUrl, _limit, _offset));
+            _controller.Request.RequestUri = new Uri($"http://localhost.com/topWords?feedurl={FeedUrl}&limit={4}&offset={5}");
 
             var obtained = _controller.Get();
 
-            var topWordsResponseResult = obtained as OkNegotiatedContentResult<TopWordsResponse>;
-
-            Assert.AreEqual(_offset, topWordsResponseResult.Content.Metadata.Offset);
+            (obtained as OkNegotiatedContentResult<TopWordsResponse>)
+                .Content
+                .Metadata
+                .Offset
+                .Should()
+                .Be(5);
         }
     }
 }

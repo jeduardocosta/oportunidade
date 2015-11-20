@@ -1,35 +1,29 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
+using NUnit.Framework;
 using MinutoSeguros.BlogFeed.API.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Moq;
 
 namespace MinutoSeguros.BlogFeed.API.Tests.Models
 {
-    [TestClass]
+    [TestFixture]
     public class MetadataTest
     {
-        [TestMethod]
+        [Test]
         public void Should_CreateMetadataObject_AndCheckLimitParameter()
         {
-            const int limit = 5;
-
-            var obtained = new Metadata(limit, It.IsAny<int>());
-
-            Assert.AreEqual(limit, obtained.Limit);
+            new Metadata(5, It.IsAny<int>())
+                .Limit
+                .Should()
+                .Be(5);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_CreateMetadataObject_AndCheckOffsetParameter()
         {
-            const int offset = 3;
-
-            var obtained = new Metadata(It.IsAny<int>(), offset);
-
-            Assert.AreEqual(offset, obtained.Offset);
+            new Metadata(It.IsAny<int>(), 3)
+                .Offset
+                .Should()
+                .Be(3);
         }
     }
 }

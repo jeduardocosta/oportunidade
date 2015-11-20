@@ -1,103 +1,103 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using MinutoSeguros.BlogFeed.API.Parsers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
+using FluentAssertions;
 
 namespace MinutoSeguros.BlogFeed.API.Tests.Parsers
 {
-    [TestClass]
+    [TestFixture]
     public class RequestParametersParserTest
     {
         private IRequestParametersParser _requestParametersParser;
+        private HttpRequestMessage _httpRequestMessage;
 
         private const string FeedUrl = "http://www.blog.com/feed";
         private const string Limit = "8";
         private const string Offset = "2";
 
-        [TestInitialize]
-        public void Init()
+        [SetUp]
+        public void SetUp()
         {
             _requestParametersParser = new RequestParametersParser();
         }
 
-        [TestMethod]
+        [Test]
         public void Should_GetFeedUrlValue_FromHttpRequestParameters_UsingParser()
         {
-            var httpRequestMessage = new HttpRequestMessage
+            _httpRequestMessage = new HttpRequestMessage
             {
-                RequestUri = new Uri(string.Format("http://www.something.com/api/resource?feedurl={0}", FeedUrl))
+                RequestUri = new Uri($"http://www.something.com/api/resource?feedurl={FeedUrl}")
             };
 
-            var obtained = _requestParametersParser.Parse(httpRequestMessage);
+            var obtained = _requestParametersParser.Parse(_httpRequestMessage);
 
-            Assert.AreEqual(FeedUrl, obtained.FeedUrl);
+            obtained.FeedUrl.Should().Be(FeedUrl);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_GetLimitValue_FromHttpRequestParameters_UsingParser()
         {
-            var httpRequestMessage = new HttpRequestMessage
+            _httpRequestMessage = new HttpRequestMessage
             {
-                RequestUri = new Uri(string.Format("http://www.something.com/api/resource?limit={0}", Limit))
+                RequestUri = new Uri($"http://www.something.com/api/resource?limit={Limit}")
             };
 
-            var obtained = _requestParametersParser.Parse(httpRequestMessage);
+            var obtained = _requestParametersParser.Parse(_httpRequestMessage);
 
-            Assert.AreEqual(Limit, obtained.Limit.ToString());
+            obtained.Limit.ToString().Should().Be(Limit);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_GetOffsetValue_FromHttpRequestParameters_UsingParser()
         {
-            var httpRequestMessage = new HttpRequestMessage
+            _httpRequestMessage = new HttpRequestMessage
             {
-                RequestUri = new Uri(string.Format("http://www.something.com/api/resource?offset={0}", Offset))
+                RequestUri = new Uri($"http://www.something.com/api/resource?offset={Offset}")
             };
 
-            var obtained = _requestParametersParser.Parse(httpRequestMessage);
+            var obtained = _requestParametersParser.Parse(_httpRequestMessage);
 
-            Assert.AreEqual(Offset, obtained.Offset.ToString());
+            obtained.Offset.ToString().Should().Be(Offset);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_GetFeedUrlValueAndIgnoreCase_FromHttpRequestParameters_UsingParser()
         {
-            var httpRequestMessage = new HttpRequestMessage
+            _httpRequestMessage = new HttpRequestMessage
             {
-                RequestUri = new Uri(string.Format("http://www.something.com/api/resource?FEedUrL={0}&LIMIT={1}&offSET={2}", FeedUrl, Limit, Offset))
+                RequestUri = new Uri($"http://www.something.com/api/resource?FEedUrL={FeedUrl}&LIMIT={Limit}&offSET={Offset}")
             };
 
-            var obtained = _requestParametersParser.Parse(httpRequestMessage);
+            var obtained = _requestParametersParser.Parse(_httpRequestMessage);
 
-            Assert.AreEqual(FeedUrl, obtained.FeedUrl);
+            obtained.FeedUrl.Should().Be(FeedUrl);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_GetLimitValueAndIgnoreCase_FromHttpRequestParameters_UsingParser()
         {
-            var httpRequestMessage = new HttpRequestMessage
+            _httpRequestMessage = new HttpRequestMessage
             {
-                RequestUri = new Uri(string.Format("http://www.something.com/api/resource?FEedUrL={0}&LIMIT={1}&offSET={2}", FeedUrl, Limit, Offset))
+                RequestUri = new Uri($"http://www.something.com/api/resource?FEedUrL={FeedUrl}&LIMIT={Limit}&offSET={Offset}")
             };
 
-            var obtained = _requestParametersParser.Parse(httpRequestMessage);
+            var obtained = _requestParametersParser.Parse(_httpRequestMessage);
 
-            Assert.AreEqual(Limit, obtained.Limit.ToString());
+            obtained.Limit.ToString().Should().Be(Limit);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_GetOffsetValueAndIgnoreCase_FromHttpRequestParameters_UsingParser()
         {
-            var httpRequestMessage = new HttpRequestMessage
+            _httpRequestMessage = new HttpRequestMessage
             {
-                RequestUri = new Uri(string.Format("http://www.something.com/api/resource?FEedUrL={0}&LIMIT={1}&offSET={2}", FeedUrl, Limit, Offset))
+                RequestUri = new Uri($"http://www.something.com/api/resource?FEedUrL={FeedUrl}&LIMIT={Limit}&offSET={Offset}")
             };
 
-            var obtained = _requestParametersParser.Parse(httpRequestMessage);
+            var obtained = _requestParametersParser.Parse(_httpRequestMessage);
 
-            Assert.AreEqual(Offset, obtained.Offset.ToString());
+            obtained.Offset.ToString().Should().Be(Offset);
         }
     }
 }

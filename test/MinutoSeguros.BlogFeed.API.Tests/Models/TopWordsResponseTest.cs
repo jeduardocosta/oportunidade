@@ -1,22 +1,21 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using MinutoSeguros.BlogFeed.API.Models;
 using MinutoSeguros.BlogFeed.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FluentAssertions;
 
 namespace MinutoSeguros.BlogFeed.API.Tests.Models
 {
-    [TestClass]
+    [TestFixture]
     public class TopWordsResponseTest
     {
-        [TestMethod]
+        [Test]
         public void Should_CreateTopWordsResponseObject()
         {
-            var requestParameters = GivenARequestParameters();
-            var blogFeedContent = GivenABlogFeedContent();
+            var requestParameters = GivenRequestParameters();
+            var blogFeedContent = GivenBlogFeedContent();
 
             const int expectedSampleWordOccurrences = 8;
 
@@ -27,15 +26,15 @@ namespace MinutoSeguros.BlogFeed.API.Tests.Models
                 .Select(it => it.Occurrences)
                 .FirstOrDefault();
 
-            Assert.AreEqual(expectedSampleWordOccurrences, obtainedSampleWordOccurrences);
+            obtainedSampleWordOccurrences.Should().Be(expectedSampleWordOccurrences);
         }
 
-        private RequestParameters GivenARequestParameters()
+        private RequestParameters GivenRequestParameters()
         {
             return new RequestParameters("feedUrl", "10", "0", "1");
         }
 
-        private IEnumerable<BlogFeedContent> GivenABlogFeedContent()
+        private IEnumerable<BlogFeedContent> GivenBlogFeedContent()
         {
             return new List<BlogFeedContent>
             {

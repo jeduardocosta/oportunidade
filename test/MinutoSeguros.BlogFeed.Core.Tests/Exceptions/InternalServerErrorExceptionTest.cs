@@ -1,25 +1,23 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using NUnit.Framework;
 using MinutoSeguros.BlogFeed.Core.Exceptions;
 
 namespace MinutoSeguros.BlogFeed.Core.Tests.Exceptions
 {
-    [TestClass]
+    [TestFixture]
     public class InternalServerErrorExceptionTest
     {
-        [TestMethod]
+        [Test]
         public void Should_ReturnAnExactErrorMessage_InInternalServerErrorException()
         {
             const string expected = "Internal server error.";
 
-            try
-            {
-                throw new InternalServerErrorException();
-            }
-            catch (InternalServerErrorException exception)
-            {
-                Assert.IsTrue(string.Equals(expected, exception.Message, StringComparison.OrdinalIgnoreCase));
-            }
+            Action action = () => { throw new InternalServerErrorException(); };
+
+            action
+                .ShouldThrow<InternalServerErrorException>()
+                .WithMessage(expected);
         }
     }
 }

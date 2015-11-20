@@ -1,24 +1,24 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using MinutoSeguros.BlogFeed.API.Models;
 using MinutoSeguros.BlogFeed.Core.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using FluentAssertions;
 
 namespace MinutoSeguros.BlogFeed.API.Tests.Models
 {
-    [TestClass]
+    [TestFixture]
     public class PostResponseTest
     {
-        [TestMethod]
+        [Test]
         public void Should_CreatePostResponseObject()
         {
             var requestParameters = new RequestParameters("feedUrl", "10", "0", "1");
             var blogFeedContent = GivenAnSetOfBlogFeedContent();
 
-            var obtained = new PostResponse(requestParameters, blogFeedContent);
-
-            Assert.IsNotNull(obtained);
+            new PostResponse(requestParameters, blogFeedContent)
+                .Should()
+                .NotBeNull();
         }
 
         private IEnumerable<BlogFeedContent> GivenAnSetOfBlogFeedContent()

@@ -1,25 +1,24 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using FluentAssertions;
+using NUnit.Framework;
 using MinutoSeguros.BlogFeed.Core.Exceptions;
 
 namespace MinutoSeguros.BlogFeed.Core.Tests.Exceptions
 {
-    [TestClass]
+    [TestFixture]
     public class CustomErrorExceptionTest
     {
-        [TestMethod]
+        [Test]
         public void Should_ReturnTheEntryMessage_InCustomErrorException()
         {
             const string expected = "sample error message";
             const string entry = "sample error message";
 
-            try
-            {
-                throw new CustomErrorException(entry);
-            }
-            catch (CustomErrorException exception)
-            {
-                Assert.AreEqual(expected, exception.Message);
-            }
+            Action action = () => { throw new CustomErrorException(entry); };
+
+            action
+                .ShouldThrow<CustomErrorException>()
+                .WithMessage(expected);
         }
     }
 }

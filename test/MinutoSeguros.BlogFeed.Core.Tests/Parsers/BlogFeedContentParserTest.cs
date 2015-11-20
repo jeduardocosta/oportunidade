@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using MinutoSeguros.BlogFeed.Core.Entities;
 using MinutoSeguros.BlogFeed.Core.Helpers;
 using MinutoSeguros.BlogFeed.Core.Parsers;
@@ -7,24 +7,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
-using System.Text;
-using System.Threading.Tasks;
+using FluentAssertions;
 
 namespace MinutoSeguros.BlogFeed.Core.Tests.Parsers
 {
-    [TestClass]
+    [TestFixture]
     public class BlogFeedContentParserTest
     {
         private Mock<IHtmlHelper> _mockHtmlHelper;
         private IBlogFeedContentParser _blogFeedContentParser;
 
         private const string SampleTitle = "sample title";
-        private const string SampleCategory = "sample category";
-        private DateTime SamplePublishDate = DateTime.Now;
-        private string SampleHtmlContent = "sample html content";
+        private readonly DateTime _samplePublishDate = DateTime.Now;
+        private readonly string SampleHtmlContent = "sample html content";
         
-        [TestInitialize]
-        public void Init()
+        [SetUp]
+        public void SetUp()
         {
             _mockHtmlHelper = new Mock<IHtmlHelper>();
 
@@ -35,54 +33,61 @@ namespace MinutoSeguros.BlogFeed.Core.Tests.Parsers
             _blogFeedContentParser = new BlogFeedContentParser(_mockHtmlHelper.Object);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_ParseSyndicationFeed_UsingBlogFeedContentParser()
         {
-            var syndicationFeed = GivenASyndicationFeedObject();
+            var syndicationFeed = GivenSyndicationFeedObject();
 
             var expected = new List<BlogFeedContent> 
             { 
-                new BlogFeedContent(SampleTitle, SamplePublishDate, new List<string>(), SampleHtmlContent) 
+                new BlogFeedContent(SampleTitle, _samplePublishDate, new List<string>(), SampleHtmlContent) 
             };
 
             var obtained = _blogFeedContentParser.Parse(syndicationFeed);
 
             _mockHtmlHelper.Verify(it => it.RemoveTags(It.IsAny<string>()), Times.Once);
 
-            Assert.IsTrue(AreEqual(expected.First(), obtained.First()));
+            AreEqual(obtained.First(), expected.First()).Should().BeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void Should_ParseSyndicationFeed_UsingBlogFeedContentParser_FromMultipleRecords()
         {
             const int syndicationItemsLength = 10;
-            var syndicationFeed = GivenASyndicationFeedObjectWithMultipleItems(syndicationItemsLength);
+            var syndicationFeed = GivenSyndicationFeedObjectWithMultipleItems(syndicationItemsLength);
 
             var obtained = _blogFeedContentParser.Parse(syndicationFeed);
 
             _mockHtmlHelper.Verify(it => it.RemoveTags(It.IsAny<string>()), Times.Exactly(syndicationItemsLength));
 
-            Assert.AreEqual(syndicationItemsLength, obtained.Count());
+            obtained
+                .Count()
+                .Should()
+                .Be(syndicationItemsLength);
         }
 
-        private SyndicationFeed GivenASyndicationFeedObject(int syndicationItemsLength = 1)
+        private SyndicationFeed GivenSyndicationFeedObject(int syndicationItemsLength = 1)
         {
             var itemAlternateLink = new Uri("http://www.sample.com");
 
-            var syndicationFeedItem = new SyndicationItem(SampleTitle, SampleHtmlContent, itemAlternateLink);
-            syndicationFeedItem.PublishDate = SamplePublishDate;
+            var syndicationFeedItem = new SyndicationItem(SampleTitle, SampleHtmlContent, itemAlternateLink)
+            {
+                PublishDate = _samplePublishDate
+            };
 
             var syndicationItems = new List<SyndicationItem>();
 
             for (var index = 0; index < syndicationItemsLength; index++)
+            {
                 syndicationItems.Add(syndicationFeedItem);
+            }
 
             return new SyndicationFeed { Items = syndicationItems };
         }
 
-        private SyndicationFeed GivenASyndicationFeedObjectWithMultipleItems(int syndicationItemsLength)
+        private SyndicationFeed GivenSyndicationFeedObjectWithMultipleItems(int syndicationItemsLength)
         {
-            return GivenASyndicationFeedObject(syndicationItemsLength);
+            return GivenSyndicationFeedObject(syndicationItemsLength);
         }
 
         private bool AreEqual(BlogFeedContent source, BlogFeedContent destination)

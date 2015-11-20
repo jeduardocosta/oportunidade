@@ -1,23 +1,20 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
+using NUnit.Framework;
 using MinutoSeguros.BlogFeed.API.Controllers;
 using MinutoSeguros.BlogFeed.API.DI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MinutoSeguros.BlogFeed.API.Tests.DI
 {
-    [TestClass]
+    [TestFixture]
     public class DIContainerTest
     {
-        [TestMethod]
-        public void Should_ResolveDependencies_UsingDIContainerClass()
+        [Test]
+        public void Should_ResolveDependencies_UsingDIContainer()
         {
-            var controller = DIContainer.Resolve<PostsController>();
-
-            Assert.IsNotNull(controller);
+            DIContainer
+                .Resolve<PostsController>()
+                .Should()
+                .NotBeNull();
         }
     }
 }

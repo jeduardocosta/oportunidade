@@ -2,67 +2,71 @@
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http.Results;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
 using MinutoSeguros.BlogFeed.API.Controllers;
 using MinutoSeguros.BlogFeed.API.DI;
 using MinutoSeguros.BlogFeed.API.Models;
+using NUnit.Framework;
 
 namespace MinutoSeguros.BlogFeed.API.IntegrationTests.Controllers
 {
-    [TestClass]
+    [TestFixture]
     public class PostsControllerIntegrationTest
     {
         private PostsController _controller;
 
         private const string FeedUrl = "http://www.minutoseguros.com.br/blog/feed/";
 
-        private int _limit;
-        private int _offset;
-
-        [TestInitialize]
-        public void Init()
+        [SetUp]
+        public void SetUp()
         {
-            _limit = 5;
-            _offset = 1;
-
             _controller = DIContainer.Resolve<PostsController>();
             _controller.Request = new HttpRequestMessage();
         }
 
-        [TestMethod]
+        [Test]
         public void Should_GetData_FromPostsController()
         {
-            _controller.Request.RequestUri = new Uri(string.Format("http://localhost.com/posts?feedurl={0}", FeedUrl));
+            _controller.Request.RequestUri = new Uri($"http://localhost.com/posts?feedurl={FeedUrl}");
 
             var obtained = _controller.Get();
 
-            var postResponseResult = obtained as OkNegotiatedContentResult<PostResponse>;
-
-            Assert.IsTrue(postResponseResult.Content.Posts.Any());
+            (obtained as OkNegotiatedContentResult<PostResponse>)
+                .Content
+                .Posts
+                .Any()
+                .Should()
+                .BeTrue();
         }
 
-        [TestMethod]
+        [Test]
         public void Should_GetMetadataLimitValue_FromPostsController()
         {
-            _controller.Request.RequestUri = new Uri(string.Format("http://localhost.com/posts?feedurl={0}&limit={1}&offset={2}", FeedUrl, _limit, _offset));
+            _controller.Request.RequestUri = new Uri($"http://localhost.com/posts?feedurl={FeedUrl}&limit=3&offset=1");
 
             var obtained = _controller.Get();
 
-            var postResponseResult = obtained as OkNegotiatedContentResult<PostResponse>;
-
-            Assert.AreEqual(_limit, postResponseResult.Content.Metadata.Limit);
+            (obtained as OkNegotiatedContentResult<PostResponse>)
+                .Content
+                .Metadata
+                .Limit
+                .Should()
+                .Be(3);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_GetMetadataOffsetValue_FromPostsController()
         {
-            _controller.Request.RequestUri = new Uri(string.Format("http://localhost.com/posts?feedurl={0}&limit={1}&offset={2}", FeedUrl, _limit, _offset));
+            _controller.Request.RequestUri = new Uri($"http://localhost.com/posts?feedurl={FeedUrl}&limit=5&offset=2");
 
             var obtained = _controller.Get();
 
-            var postResponseResult = obtained as OkNegotiatedContentResult<PostResponse>;
-
-            Assert.AreEqual(_offset, postResponseResult.Content.Metadata.Offset);
+            (obtained as OkNegotiatedContentResult<PostResponse>)
+                .Content
+                .Metadata
+                .Offset
+                .Should()
+                .Be(2);
         }
     }
 }
