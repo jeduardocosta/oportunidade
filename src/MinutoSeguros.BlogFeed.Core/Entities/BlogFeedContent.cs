@@ -43,18 +43,18 @@ namespace MinutoSeguros.BlogFeed.Core.Entities
             return filteredContent;
         }
 
-        private string RemoveArticles(string source)
+        internal static string RemoveArticles(string source)
         {
             const string pattern = @"\b(o|a|os|as|um|uma|uns|umas)\b";
             var filtered = Regex.Replace(source, pattern, string.Empty, RegexOptions.IgnoreCase);
-            return filtered;
+            return filtered.Trim();
         }
 
-        private string RemovePrepositions(string source)
+        internal static string RemovePrepositions(string source)
         {
             const string pattern = @"\b(a|ante|após|até|com|contra|de|desde|em|entre|para|por|perante|segundo|sem|sob|sobre|trás|afora|fora|exceto|salvo|malgrado|durante|mediante|segundo|menos)\b";
             var filtered = Regex.Replace(source, pattern, string.Empty, RegexOptions.IgnoreCase);
-            return filtered;
+            return filtered.Trim();
         }
 
         private Dictionary<string, int> GetTopWords(string source)

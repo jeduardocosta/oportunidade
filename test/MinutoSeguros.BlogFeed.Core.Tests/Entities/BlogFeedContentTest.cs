@@ -106,5 +106,50 @@ namespace MinutoSeguros.BlogFeed.Core.Tests.Entities
 
             obtained.TopWords.ShouldAllBeEquivalentTo(expectedTopWords);
         }
+
+        [Test]
+        public void Should_RemoveAllArticles_FromText()
+        {
+            const string text = "o a os as um uma uns umas";
+
+            BlogFeedContent
+                .RemoveArticles(text)
+                .Should()
+                .BeEmpty();
+        }
+
+        [Test]
+        public void Should_RemoveAllUppercaseArticles_FromText()
+        {
+            var text = "o a os as um uma uns umas".ToUpper();
+
+            BlogFeedContent
+                .RemoveArticles(text)
+                .Should()
+                .BeEmpty();
+        }
+
+        [Test]
+        public void Should_RemoveAllPrepositions_FromText()
+        {
+            const string text = "a ante após até com contra de desde em entre para por perante segundo sem sob sobre trás afora fora exceto salvo malgrado durante mediante segundo menos";
+
+            BlogFeedContent
+                .RemovePrepositions(text)
+                .Should()
+                .BeEmpty();
+        }
+
+        [Test]
+        public void Should_RemoveAllUppercasePrepositions_FromText()
+        {
+            var text = "a ante após até com contra de desde em entre para por perante segundo sem sob sobre trás afora fora exceto salvo malgrado durante mediante segundo menos"
+                .ToUpper();
+
+            BlogFeedContent
+                .RemovePrepositions(text)
+                .Should()
+                .BeEmpty();
+        }
     }
 }
