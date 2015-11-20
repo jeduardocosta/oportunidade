@@ -3,18 +3,14 @@ using MinutoSeguros.BlogFeed.API.Parsers;
 using MinutoSeguros.BlogFeed.Core.Exceptions;
 using MinutoSeguros.BlogFeed.Core.Readers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace MinutoSeguros.BlogFeed.API.Controllers
 {
     public class PostsController : ApiController
     {
-        private IRequestParametersParser _requestParametersParser;
-        private IBlogFeedReader _blogFeedReader;
+        private readonly IRequestParametersParser _requestParametersParser;
+        private readonly IBlogFeedReader _blogFeedReader;
 
         public PostsController(IRequestParametersParser requestParametersParser, IBlogFeedReader blogFeedReader)
         {

@@ -8,14 +8,8 @@ namespace MinutoSeguros.BlogFeed.Log
     {
         private static Logger _logger;
         
-        private static Logger Logger
-        {
-            get
-            {
-                return _logger ?? LogManager.GetCurrentClassLogger();
-            }
-        }
-        
+        private static Logger Logger => _logger ?? LogManager.GetCurrentClassLogger();
+
         private readonly NLog.ILogger _nlogLogger;
 
         public LoggerWrapper()

@@ -1,8 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace MinutoSeguros.BlogFeed.API.Models
 {
@@ -39,7 +35,7 @@ namespace MinutoSeguros.BlogFeed.API.Models
         {
             unchecked
             {
-                return (Name != null ? Name.GetHashCode() : 0) ^ (Occurrences.GetHashCode() * 397);
+                return (Name?.GetHashCode() ?? 0) ^ (Occurrences.GetHashCode() * 397);
             }
         }
     }

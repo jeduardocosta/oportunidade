@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Web;
 
 namespace MinutoSeguros.BlogFeed.API.Parsers
 {
@@ -14,19 +13,19 @@ namespace MinutoSeguros.BlogFeed.API.Parsers
 
     public class RequestParametersParser : IRequestParametersParser
     {
-        private const string feedUrlKeyName = "feedurl";
-        private const string limitKeyName = "limit";
-        private const string offsetKeyName = "offset";
-        private const string numberOfTopWordsKeyName = "numberoftopwords";
+        private const string FeedUrlKeyName = "feedurl";
+        private const string LimitKeyName = "limit";
+        private const string OffsetKeyName = "offset";
+        private const string NumberOfTopWordsKeyName = "numberoftopwords";
 
         public RequestParameters Parse(HttpRequestMessage request)
         {
             var sourceParameters = ExtractParametersBy(request);
 
-            var feedUrl = GetContentByKeyName(feedUrlKeyName, sourceParameters);
-            var limit = GetContentByKeyName(limitKeyName, sourceParameters);
-            var offset = GetContentByKeyName(offsetKeyName, sourceParameters);
-            var numberOfTopWords = GetContentByKeyName(numberOfTopWordsKeyName, sourceParameters);
+            var feedUrl = GetContentByKeyName(FeedUrlKeyName, sourceParameters);
+            var limit = GetContentByKeyName(LimitKeyName, sourceParameters);
+            var offset = GetContentByKeyName(OffsetKeyName, sourceParameters);
+            var numberOfTopWords = GetContentByKeyName(NumberOfTopWordsKeyName, sourceParameters);
 
             var requestParameters = new RequestParameters(feedUrl, limit, offset, numberOfTopWords);
             return requestParameters;

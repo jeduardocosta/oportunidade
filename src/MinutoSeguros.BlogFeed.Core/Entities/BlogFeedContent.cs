@@ -10,14 +10,9 @@ namespace MinutoSeguros.BlogFeed.Core.Entities
         public string Title { get; private set; }
         public DateTime PublishDate { get; private set; }
         public IEnumerable<string> Categories { get; private set; }
-        public string FullContent { get; private set; }
+        public string FullContent { get; }
 
-        public Dictionary<string, int> TopWords
-        {
-            get { return _topWords; }
-        }
-
-        private Dictionary<string, int> _topWords;
+        public Dictionary<string, int> TopWords { get; private set; }
 
         public BlogFeedContent(string title, DateTime publishDate, IEnumerable<string> categories, string content)
         {
@@ -32,10 +27,12 @@ namespace MinutoSeguros.BlogFeed.Core.Entities
         private void LoadTopWordsAttribute(string source)
         {
             if (string.IsNullOrWhiteSpace(source))
+            { 
                 return;
+            }
 
             var filteredContent = RemovedUnnecessaryWords(source);
-            _topWords = GetTopWords(filteredContent);
+            TopWords = GetTopWords(filteredContent);
         }
 
         private string RemovedUnnecessaryWords(string source)

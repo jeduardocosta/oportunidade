@@ -1,11 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.WebApi;
-using MinutoSeguros.BlogFeed.Core.DI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Web;
 
 namespace MinutoSeguros.BlogFeed.API.DI
 {

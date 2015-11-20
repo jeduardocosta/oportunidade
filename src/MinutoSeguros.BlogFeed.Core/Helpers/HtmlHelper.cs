@@ -2,10 +2,6 @@
 using MinutoSeguros.BlogFeed.Core.Exceptions;
 using MinutoSeguros.BlogFeed.Log;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace MinutoSeguros.BlogFeed.Core.Helpers
@@ -40,12 +36,12 @@ namespace MinutoSeguros.BlogFeed.Core.Helpers
             {
                 const string errorMessage = "failed to remove tags from html content.";
 
-                _logger.Error(string.Format("{0} - value: {1}.", errorMessage, htmlContent), exception);
+                _logger.Error($"{errorMessage} - value: {htmlContent}.", exception);
                 throw new CustomErrorException(errorMessage);
             }
         }
 
-        private string Encode(string source)
+        private static string Encode(string source)
         {
             return HttpUtility.HtmlDecode(source);
         }
